@@ -1,7 +1,6 @@
 /**
  * @name DynamicIcon
  * @description Gets data for the dynamic icon feature
- * @version 1.0.0
  */
 
 function setBadge() {
@@ -27,8 +26,9 @@ let GuildReadStateStore;
 function init() {
     GuildReadStateStore = subscribeToStore("GuildReadStateStore");
     subscribeToStore("RelationshipStore");
+    setBadge();
 }
 
 if (await window.goofcord.getConfig("dynamicIcon") === true) {
-    init()
+    setTimeout(()=>{init()},2000);
 }

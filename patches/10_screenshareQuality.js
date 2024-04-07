@@ -1,7 +1,6 @@
 /**
  * @name ScreenshareQualityPatch
  * @description Allows you to modify screenshare quality
- * @version 1.1.1
  */
 
 function after(functionName, object, callback, once = false) {
@@ -19,9 +18,9 @@ function after(functionName, object, callback, once = false) {
     };
 }
 
-function patchScreenshareQuality(responseParams) {
+async function patchScreenshareQuality(responseParams) {
     console.log("[ScreenshareQualityPatch] Loading screenshare quality patch...");
-    const StreamQuality = Vencord.Webpack.findByProps("VIDEO_QUALITY_MODES_TO_OVERWRITES").VideoQualityManager;
+    const StreamQuality = await Vencord.Webpack.findByPropsLazy("VIDEO_QUALITY_MODES_TO_OVERWRITES").VideoQualityManager;
     const ASPECT_RATIO = screen.width / screen.height;
     const width = Math.round(responseParams.height * ASPECT_RATIO);
 

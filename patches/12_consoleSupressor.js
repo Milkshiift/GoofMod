@@ -1,7 +1,6 @@
 /**
  * @name ConsoleSupressor
  * @description Suppresses Discord logger
- * @version 2.1.1
  */
 
 const patches = [
