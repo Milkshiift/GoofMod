@@ -3,6 +3,23 @@
  * @description Allows you to modify screenshare quality
  */
 
+const patches = [
+    {
+        find: "x-google-max-bitrate",
+        replacement: [
+            {
+                match: /"x-google-max-bitrate=".concat\(\i\)/,
+                replace: '"x-google-max-bitrate=".concat("80_000")'
+            },
+            {
+                match: /;level-asymmetry-allowed=1/,
+                replace: ";b=AS:800000;level-asymmetry-allowed=1"
+            }
+        ],
+        plugin: "ScreenshareQualityPatch"
+    }
+];
+
 function after(functionName, object, callback, once = false) {
     const originalFunction = object[functionName];
   
@@ -18,29 +35,29 @@ function after(functionName, object, callback, once = false) {
     };
 }
 
-async function patchScreenshareQuality(responseParams) {
+async function patchScreenshareQuality(height, framerate) {
     console.log("[ScreenshareQualityPatch] Loading screenshare quality patch...");
     const StreamQuality = await Vencord.Webpack.findByPropsLazy("VIDEO_QUALITY_MODES_TO_OVERWRITES").VideoQualityManager;
-    const ASPECT_RATIO = screen.width / screen.height;
-    const width = Math.round(responseParams.height * ASPECT_RATIO);
+    const aspectRatio = screen.width / screen.height;
+    const width = Math.round(height * aspectRatio);
 
     after("getVideoQuality", StreamQuality.prototype, (response) => {
         response = {
-            bitrateMin: responseParams.bitrateMin || 500000,
-            bitrateMax: responseParams.bitrateMax || 70000000,
-            bitrateTarget: responseParams.bitrateTarget || 40000000,
-            localWant: responseParams.localWant || 100,
+            bitrateMin: 500000,
+            bitrateMax: 70000000,
+            bitrateTarget: 40000000,
+            localWant: 100,
             capture: {
-                framerate: responseParams.framerate || 30,
+                framerate: framerate,
                 width,
-                height: responseParams.height || 720,
-                pixelCount: width * (responseParams.height || 720)
+                height: height,
+                pixelCount: width * height
             },
             encode: {
-                framerate: responseParams.framerate || 30,
+                framerate: framerate,
                 width,
-                height: responseParams.height || 720,
-                pixelCount: width * (responseParams.height || 720)
+                height: height,
+                pixelCount: width * height
             }
         };
         return response;
@@ -48,21 +65,21 @@ async function patchScreenshareQuality(responseParams) {
 
     after("getQuality", StreamQuality.prototype, (response) => {
         response = {
-            bitrateMin: responseParams.bitrateMin || 500000,
-            bitrateMax: responseParams.bitrateMax || 70000000,
-            bitrateTarget: responseParams.bitrateTarget || 40000000,
-            localWant: responseParams.localWant || 100,
+            bitrateMin: 500000,
+            bitrateMax: 70000000,
+            bitrateTarget: 40000000,
+            localWant: 100,
             capture: {
-                framerate: responseParams.framerate || 30,
+                framerate: framerate,
                 width,
-                height: responseParams.height || 720,
-                pixelCount: width * (responseParams.height || 720)
+                height: height,
+                pixelCount: width * height
             },
             encode: {
-                framerate: responseParams.framerate || 30,
+                framerate: framerate,
                 width,
-                height: responseParams.height || 720,
-                pixelCount: width * (responseParams.height || 720)
+                height: height,
+                pixelCount: width * height
             }
         };
         return response;
@@ -70,10 +87,7 @@ async function patchScreenshareQuality(responseParams) {
 }
 
 // Setting default settings
-patchScreenshareQuality({
-    framerate: 30,
-    height: 1080
-});
+patchScreenshareQuality(720, 30);
 
 window.ScreenshareQuality = {};
 window.ScreenshareQuality.patchScreenshareQuality = patchScreenshareQuality;
