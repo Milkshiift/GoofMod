@@ -10,7 +10,7 @@ const patches = [
         replacement: [
             {
                 match: /(:.,src:.\.url)/,
-                replace: "$1.replace('https://www.youtube.com', 'https://iv.datura.network')+'?player_style=youtube'"
+                replace: "$1.replace('https://www.youtube.com', 'https://farside.link/invidious')+'?player_style=youtube'"
             }
         ],
         plugin: "InvidiousEmbeds"
