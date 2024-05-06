@@ -1,6 +1,6 @@
 /**
  * @name MessageEncryption
- * @description Encrypts messages
+ * @description Encrypts messages https://github.com/Milkshiift/GoofCord/wiki/Message-Encryption
  */
 
 const patches = [
@@ -48,6 +48,9 @@ function decryptMessages(messages) {
 }
 window.MessageEncryption = {};
 window.MessageEncryption.decryptMessages = decryptMessages;
+
+// Scripts are turned into an IIFE, so we can use early return instead of nesting
+if (goofcord.getConfig("messageEncryption") === false) return;
 
 let encryptionEnabled = false;
 
