@@ -3,23 +3,6 @@
  * @description Allows you to modify screenshare quality
  */
 
-const patches = [
-    {
-        find: "x-google-max-bitrate",
-        replacement: [
-            {
-                match: /"x-google-max-bitrate=".concat\(\i\)/,
-                replace: '"x-google-max-bitrate=".concat("80_000")'
-            },
-            {
-                match: /;level-asymmetry-allowed=1/,
-                replace: ";b=AS:800000;level-asymmetry-allowed=1"
-            }
-        ],
-        plugin: "ScreenshareQualityPatch"
-    }
-];
-
 function after(functionName, object, callback, once = false) {
     const originalFunction = object[functionName];
   
@@ -87,7 +70,7 @@ async function patchScreenshareQuality(height, framerate) {
 }
 
 // Setting default settings
-patchScreenshareQuality(720, 30);
+//patchScreenshareQuality(720, 30);
 
 window.ScreenshareQuality = {};
 window.ScreenshareQuality.patchScreenshareQuality = patchScreenshareQuality;
