@@ -5,7 +5,7 @@
 
 const patches = [
     {
-        find: ".setLogFn",
+        find: "Σ:\"",
         replacement: [
             {
                 match: /&&console(.*?)\).*?\)/,
