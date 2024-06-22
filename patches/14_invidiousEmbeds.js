@@ -17,8 +17,8 @@ const patches = [
 ];
 
 // TODO: Make fastestInstanceCached persistent across restarts
-
-let fastestInstanceCached = "https://farside.link/invidious/latest_version?id=";
+// https://farside.link/invidious/
+let fastestInstanceCached = "https://invidious.reallyaweso.me/latest_version?id=";
 async function updateFastestInstance() {
     const response = await fetch("https://api.invidious.io/instances.json?pretty=0&sort_by=type,users");
     const json = await response.json();
@@ -35,7 +35,7 @@ async function updateFastestInstance() {
         } catch (e) {}
         const end = performance.now();
         const time = end - start;
-        //console.log(instance, time);
+        console.log(instance, time);
         if (time < prevBestTime) {
             prevBestTime = time;
             prevBestInstance = instance;
@@ -46,7 +46,7 @@ async function updateFastestInstance() {
     fastestInstanceCached = prevBestInstance+"/latest_version?id=";
 }
 
-updateFastestInstance();
+//updateFastestInstance();
 
 window.InvidiousEmbeds = {};
 window.InvidiousEmbeds.fastestInstance = () => fastestInstanceCached;
